@@ -1,0 +1,690 @@
+ <!DOCTYPE html>
+<meta charset="utf-8" />
+<title>The Word Testbench</title>
+<script language="javascript" type="text/javascript">
+var roomOutput;
+var commandLogOutput;
+var gamePhase;
+var activePlayerIdVar = 0;
+var judgePlayerIdVar = 0;
+var playerIdVar = -1;
+var roomOutputToggle = true;
+var playerSubmittedClue = false;
+var commandLogEnabled = true;
+var isTable = false;
+var roomSocket = null;
+
+function init() {
+	//init() assigns element handlers to the variables
+	setRoomWebSocket();
+	roomOutput = document.getElementById("roomOutput");
+	commandLogOutput = document.getElementById("commandLogOutput");
+	// document.getElementById("tableCreateRoom").style.visibility = "hidden";
+	// document.getElementById("tableStartGame").style.visibility = "hidden";
+	// document.getElementById("tableNextRound").style.visibility = "hidden";
+}
+
+function setRoomWebSocket () {
+	var wsUrl=document.getElementById("stage-select").value;
+	roomSocket = new WebSocket(wsUrl);
+	roomSocket.onopen = function(evt) { roomWebsocketOnOpen(evt) };
+	roomSocket.onclose = function(evt) { roomWebsocketOnClose(evt) };
+	roomSocket.onmessage = function(evt) { roomWebsocketOnMessage(evt) };
+	roomSocket.onerror = function(evt) {roomWebsocketOnMessage(evt) };
+}
+
+function roomWebsocketOnOpen(evt) {
+	writeToRoomOutput("Room Websocket Connected.");
+}
+function roomWebsocketOnClose(evt) {
+	writeToRoomOutput("Room Websocket Disconnected.");
+}
+function roomWebsocketOnMessage(evt) {
+	var jsonObject = JSON.parse(evt.data);
+	if (has(jsonObject, 'room.game_state.status')) {
+		document.getElementById("gamePhase").value = jsonObject.room.game_state.status;
+		if (jsonObject.room.game_state.status === "Judging") {
+			playerSubmittedClue = false;
+		}
+		if ((document.getElementById("gamePhase").value === "Result") && (isTable === true)) {
+			document.getElementById("tableNextRound").style.visibility = "visible";
+		}
+	}
+	if (has(jsonObject, 'room.game_state.current_round')) {
+		document.getElementById("currentRound").value = jsonObject.room.game_state.current_round;
+	}
+	if (has(jsonObject, 'room.users')) {
+		writeToUsersOutput(jsonObject.room.users);
+	}
+	if (has(jsonObject, 'room.game_state.active_player')) {
+		activePlayerIdVar = jsonObject.room.game_state.active_player;
+		document.getElementById("activePlayerId").value = jsonObject.room.game_state.active_player;
+		if (playerIdVar === activePlayerIdVar) {
+			document.getElementById("activePlayerFlag").style.visibility = "visible";
+			if (document.getElementById("gamePhase").value === "Guessing") {
+				// document.getElementById("validCluesOutput").style.visibility = "visible";
+			} else {
+				// document.getElementById("validCluesOutput").style.visibility = "hidden";
+			}
+			// document.getElementById("deniedCluesOutput").style.visibility = "hidden";
+		} else {
+			document.getElementById("activePlayerFlag").style.visibility = "hidden";
+			
+			// document.getElementById("validCluesOutput").style.visibility = "visible";
+			// document.getElementById("deniedCluesOutput").style.visibility = "visible";
+		}
+		// disable active player controls unless player is active and in the "Guessing" state.
+		if ((playerIdVar === activePlayerIdVar) && (document.getElementById("gamePhase").value === "Guessing")) {
+			// document.getElementById("activeSubmitGuessButton").disabled = false;
+			// document.getElementById("guessIn").disabled = false;
+		} else {
+			// document.getElementById("activeSubmitGuessButton").disabled = true;
+			// document.getElementById("guessIn").disabled = true;
+		}
+		if ((playerIdVar !== activePlayerIdVar) && (document.getElementById("gamePhase").value === "Clues") && playerSubmittedClue === false) {
+			// document.getElementById("clueIn").disabled = false;
+			// document.getElementById("userSubmitClueButton").disabled = false;
+		} else {
+			// document.getElementById("clueIn").disabled = true;
+			// document.getElementById("userSubmitClueButton").disabled = true;
+		}
+	}
+	if (has(jsonObject, 'room.game_state.judge_player')) {
+		judgePlayerIdVar = jsonObject.room.game_state.judge_player;
+		document.getElementById("judgePlayerId").value = jsonObject.room.game_state.judge_player;
+		if (playerIdVar === judgePlayerIdVar) {
+			document.getElementById("judgePlayerFlag").style.visibility = "visible";
+		} else {
+			document.getElementById("judgePlayerFlag").style.visibility = "hidden";
+		}
+		// if ((playerIdVar === judgePlayerIdVar) && (document.getElementById("gamePhase").value === "Judging")) {
+		// 	document.getElementById("updateCluesIn").disabled = false;
+		// 	document.getElementById("judgeUpdateCluesButton").disabled = false;
+		// 	document.getElementById("judgeSubmitCluesButton").disabled = false;
+		// } else {
+		// 	document.getElementById("updateCluesIn").disabled = true;
+		// 	document.getElementById("judgeUpdateCluesButton").disabled = true;
+		// 	document.getElementById("judgeSubmitCluesButton").disabled = true;
+		// }
+		// if ((playerIdVar === judgePlayerIdVar) && (document.getElementById("gamePhase").value === "Evaluating")) {
+		// 	document.getElementById("judgeRightGuessButton").disabled = false;
+		// 	document.getElementById("judgeWrongGuessButton").disabled = false;
+		// } else {
+		// 	document.getElementById("judgeRightGuessButton").disabled = true;
+		// 	document.getElementById("judgeWrongGuessButton").disabled = true;
+		// }
+	}
+	if (has(jsonObject, 'room.game_state.mystery_word.word')) {
+		if  (playerIdVar === activePlayerIdVar) {
+		} else {
+			document.getElementById("mysteryWord").style.visibility = "visible";
+			document.getElementById("mysteryWord").value = jsonObject.room.game_state.mystery_word.word;
+		}
+	}
+	if (has(jsonObject, 'room.game_state.guess')) {
+		document.getElementById("guess").value = jsonObject.room.game_state.guess;
+	}
+	writeToRoomOutput(JSON.stringify(jsonObject, null, 4));
+	if (has(jsonObject, 'room.id')) {
+		document.getElementById("roomIdIn").value = jsonObject.room.id;
+	}
+	if (has(jsonObject, 'room.game_state.clues')) {
+		writeToCluesOutput(jsonObject.room.game_state.clues);
+	}
+	if (has(jsonObject, 'room.game_state.right_words')) {
+		writeToRightWordsOutput(jsonObject.room.game_state.right_words);
+	}
+	if (has(jsonObject, 'room.game_state.wrong_words')) {
+		writeToWrongWordsOutput(jsonObject.room.game_state.wrong_words);
+	}
+}
+
+// tableWebsocket functions
+function tableWebsocket() {
+	var wsUrl=document.getElementById("stage-select").value;
+	tableWebsocket = new WebSocket(wsUrl);
+	tableWebsocket.onopen = function(evt) { tableOnOpen(evt) };
+	tableWebsocket.onclose = function(evt) { tableOnClose(evt) };
+	tableWebsocket.onmessage = function(evt) { commandlogOnMessage(evt) };
+	tableWebsocket.onerror = function(evt) { commandlogOnMessage(evt) };
+}
+function tableOnOpen(evt) {
+	writeToCommandLogOutput("Table Websocket Connected.");
+	// document.getElementById("tableCreateRoom").style.visibility = "visible";
+	isTable = true;
+}
+function tableOnClose(evt) {
+	writeToCommandLogOutput("Table Websocket Disconnected.");
+}
+
+// userWebsocket functions
+function userWebsocket() {
+	var wsUrl=document.getElementById("stage-select").value;
+	userWebsocket = new WebSocket(wsUrl);
+	userWebsocket.onopen = function(evt) { userOnOpen(evt) };
+	userWebsocket.onclose = function(evt) { userOnClose(evt) };
+	userWebsocket.onmessage = function(evt) { commandlogOnMessage(evt) };
+	userWebsocket.onerror = function(evt) { commandlogOnMessage(evt) };
+}
+function userOnOpen(evt) {
+	writeToCommandLogOutput("User Websocket Connected.");
+	document.getElementById("userNameIn").disabled = false;
+	document.getElementById("userJoinRoomButton").style.visibility = "visible";
+}
+function userOnClose(evt) {
+	writeToCommandLogOutput("User Websocket Disconnected.");
+}
+function userUpdateStatus() {
+	var msg = {
+		action: "update-status",
+		roomId: document.getElementById("roomIdIn").value,
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+}
+
+function commandlogOnMessage(evt) {
+	var jsonObject = JSON.parse(evt.data);
+	if (jsonObject.hasOwnProperty('room')) {
+		document.getElementById("joinCodeIn").value = jsonObject.room.join_code;
+		document.getElementById("roomIdIn").value = jsonObject.room.id;
+		document.getElementById("gamePhase").value = jsonObject.room.game_state.status;
+	}
+	if (jsonObject.hasOwnProperty('player_id')) {
+		playerIdVar = jsonObject.player_id;
+		document.getElementById("playerId").value = jsonObject.player_id;
+	}
+	writeToCommandLogOutput(JSON.stringify(jsonObject, null, 4));
+	getRoom();
+}
+
+// output functions
+function writeToRoomOutput(message) {
+	var pre = document.createElement("p");
+	pre.style.wordWrap = "break-word";
+	if (roomOutputToggle){
+		pre.innerHTML = Date().toString() + "\n" + message;
+	} else {
+		pre.innerHTML = "Hidden";
+	}
+	if (roomOutput.hasChildNodes()){roomOutput.removeChild(roomOutput.childNodes[0]);}
+	roomOutput.appendChild(pre);
+}
+function writeToCommandLogOutput(message) {
+	if (commandLogEnabled === true) {
+		var pre = document.createElement("p");
+		pre.style.wordWrap = "break-word";
+		pre.innerHTML = Date().toString() + "\n" + message;
+		if (commandLogOutput.hasChildNodes()) {
+			commandLogOutput.insertBefore(pre, commandLogOutput.childNodes[0]);
+		} else {
+			commandLogOutput.appendChild(pre);
+		};
+	}
+}
+
+function writeToCluesOutput(clues) {
+	// clear valid and denied clues outputs
+	var validCluesOutput = document.getElementById("validCluesOutput");
+	var deniedCluesOutput = document.getElementById("deniedCluesOutput");
+	while (validCluesOutput.hasChildNodes()) {
+		validCluesOutput.removeChild(validCluesOutput.childNodes[0]);
+	}
+	var deniedCluesOutput = document.getElementById("deniedCluesOutput");
+	while (deniedCluesOutput.hasChildNodes()) {
+		deniedCluesOutput.removeChild(deniedCluesOutput.childNodes[0]);
+	}
+	for (i in clues) {
+		var pre = document.createElement("p");
+		pre.style.wordWrap = "break-word";
+		pre.innerHTML = clues[i].player_id + ": " + clues[i].word;
+		if (clues[i].valid) {
+			validCluesOutput.appendChild(pre);
+		} else {
+			deniedCluesOutput.appendChild(pre);
+		}
+	}
+}
+
+function writeToRightWordsOutput(right_words) {
+	//clear right words output
+	var rightWordsOutput = document.getElementById("rightWordsOutput");
+	while (rightWordsOutput.hasChildNodes()) {
+		rightWordsOutput.removeChild(rightWordsOutput.childNodes[0]);
+	}
+	for (i in right_words) {
+		var pre = document.createElement("p");
+		pre.style.wordWrap = "break-word";
+		pre.style.whiteSpace = "normal";
+		pre.innerHTML = JSON.stringify(right_words[i]);
+		rightWordsOutput.appendChild(pre);
+	}
+}
+
+function writeToWrongWordsOutput(wrong_words) {
+	//clear right words output
+	var wrongWordsOutput = document.getElementById("wrongWordsOutput");
+	while (wrongWordsOutput.hasChildNodes()) {
+		wrongWordsOutput.removeChild(wrongWordsOutput.childNodes[0]);
+	}
+	for (i in wrong_words) {
+		var pre = document.createElement("p");
+		pre.style.wordWrap = "break-word";
+		pre.style.whiteSpace = "normal";
+		pre.innerHTML = JSON.stringify(wrong_words[i]);
+		wrongWordsOutput.appendChild(pre);
+	}
+}
+
+function writeToUsersOutput(users) {
+	//clear users output
+	var usersOutput = document.getElementById("usersOutput");
+	while (usersOutput.hasChildNodes()) {
+		usersOutput.removeChild(usersOutput.childNodes[0]);
+	}
+	for (i in users) {
+		var pre = document.createElement("p");
+		pre.style.wordWrap = "break-word";
+		pre.innerHTML = users[i].player_id + ": " + users[i].display_name;
+		usersOutput.appendChild(pre);
+	}
+}
+
+// table functions
+function createRoom() {
+	var msg = {
+		action: "create-room",
+		gameCode: "TW",
+		displayName: "Host Table", 
+		userId: "HOSTUSERID", 
+		profileImage: "HOSTIMG",
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	tableWebsocket.send(JSON.stringify(msg));
+	// document.getElementById("tableStartGame").style.visibility = "visible";
+}
+function startGame() {
+	tableUpdateStatus();
+}
+function nextRound() {
+	tableUpdateStatus();
+}
+function tableUpdateStatus() {
+	var msg = {
+		action: "update-status",
+		roomId: document.getElementById("roomIdIn").value,
+		maxRounds: Number(document.getElementById("maxRoundsIn").value),
+		tableTopName: document.getElementById("tableNameIn").value,
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	tableWebsocket.send(JSON.stringify(msg));
+	getRoom();
+}
+
+function endGame() {
+	var msg = {
+		action: "end-game",
+		roomId: document.getElementById("roomIdIn").value,
+		debug: true
+	}
+	writeToCommandLogOutput(JSON.stringify(msg));
+	tableWebsocket.send(JSON.stringify(msg));
+	getRoom();
+}
+function tableRejoin() {
+	var msg = {
+		action: "host-rejoin",
+		roomId: document.getElementById("roomIdIn").value,
+		userId: document.getElementById("userIdIn").value,
+		debug: true
+	}
+	writeToCommandLogOutput(JSON.stringify(msg));
+	tableWebsocket.send(JSON.stringify(msg));
+	getRoom();
+}
+function tablePing() {
+	var msg = {
+		action: "ping"
+	}
+	writeToCommandLogOutput(JSON.stringify(msg));
+	tableWebsocket.send(JSON.stringify(msg));
+}
+function kickPlayer(){
+	var msg = {
+		action: "remove-user",
+		roomId: document.getElementById("roomIdIn").value,
+		playerId: Number(document.getElementById("playerIdKickIn").value)
+	}
+	writeToCommandLogOutput(JSON.stringify(msg));
+	tableWebsocket.send(JSON.stringify(msg))
+}
+
+// user functions
+function playerUpdateStatus() {
+	var msg = {
+		action: "update-status",
+		roomId: document.getElementById("roomIdIn").value,
+		playerId: Number(document.getElementById("playerIdIn").value)
+	};
+	if(tableWebsocket.ready_state === WebSocket.OPEN) {
+		writeToCommandLogOutput(JSON.stringify(msg));
+		tableWebsocket.send(JSON.stringify(msg));
+	} else {
+		writeToCommandLogOutput(JSON.stringify(msg));
+		userWebsocket.send(JSON.stringify(msg));
+	}
+	getRoom();
+}
+function joinRoom() {
+	var msg = {
+		action: "join-room",
+		joinCode: document.getElementById("joinCodeIn").value,
+		userId: document.getElementById("userIdIn").value,
+		name: document.getElementById("userNameIn").value,
+		profileImage: "https://www.thesun.co.uk/wp-content/uploads/2018/11/NINTCHDBPICT000058057150-e1541188679993.jpg",
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+	document.getElementById("userNameIn").disabled = true;
+}
+function submitClue() {
+	var msg = {
+		action: "submit-clue",
+		roomId: document.getElementById("roomIdIn").value,
+		clue: document.getElementById("clueIn").value,
+		playerId: Number(document.getElementById("playerId").value),
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+	playerSubmittedClue = true;
+}
+function updateClues() {
+	var msg = {
+		action: "update-clues",
+		roomId: document.getElementById("roomIdIn").value,
+		playerId: Number(document.getElementById("updateCluesIn").value),
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+}
+function submitClues() {
+	playerUpdateStatus();
+}
+function submitGuess() {
+	var msg = {
+		action: "submit-guess",
+		roomId: document.getElementById("roomIdIn").value,
+		guess: document.getElementById("guessIn").value,
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+}
+function rightGuess() {
+	var msg = {
+		action: "right-guess",
+		roomId: document.getElementById("roomIdIn").value,
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+}
+function wrongGuess() {
+	var msg = {
+		action: "wrong-guess",
+		roomId: document.getElementById("roomIdIn").value,
+		debug: true
+	};
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+}
+function toggleCommandLog() {
+	commandLogEnabled = !commandLogEnabled;
+}
+function userRejoin() {
+	var msg = {
+		action: "player-rejoin",
+		joinCode: document.getElementById("joinCodeIn").value,
+		userId: document.getElementById("userIdIn").value,
+		debug: true
+	}
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+}
+function userLeaveRoom() {
+	var msg = {
+		action: "leave-room",
+		playerId:Number(document.getElementById("playerIdIn").value),
+		debug: true
+	}
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+}
+function userPing() {
+	var msg = {
+		action: "ping"
+	}
+	writeToCommandLogOutput(JSON.stringify(msg));
+	userWebsocket.send(JSON.stringify(msg));
+}
+
+// room functions
+function getRoom() {
+	var msg = {
+		action: "get-room",
+		joinCode: document.getElementById("joinCodeIn").value
+	};
+	roomSocket.send(JSON.stringify(msg));	
+}
+function toggleRoomOutput() {
+	if (roomOutputToggle) {
+		roomOutputToggle = false;
+	} else {
+		roomOutputToggle = true;
+	}
+	getRoom();
+}  
+
+// helper function
+// has function checks for nested json property
+has = function(obj, key) {
+    return key.split(".").every(function(x) {
+        if(typeof obj != "object" || obj === null || ! x in obj)
+            return false;
+        obj = obj[x];
+        return true;
+    });
+}
+
+// listener that runs the init() function
+window.addEventListener("load", init, false);
+</script>
+<style>
+body {
+	font-family: Verdana;
+	color: black;
+}
+
+.tl { position: absolute; top: 0; left: 0; right: 50%; bottom: 50%; 
+      padding-left: 1%; border:solid #000; border-width: 0 1px 1px 0; overflow: hidden}
+.tr { position: absolute; top: 0; left: 50%; right: 0; bottom: 50%; 
+      padding-left: 1%; border:solid #000; border-width: 0 0 1px 0; overflow: hidden}
+.bl { position: absolute; top: 50%; left: 0; right: 50%; bottom: 0; 
+      padding-left: 1%; border:solid #000; border-width: 0 1px 0 0; overflow: hidden}
+.br { position: absolute; top: 50%; left: 50%; right: 0; bottom: 0; 
+      padding-left: 1%; border:solid #000; border-width: 0 0 0 0; overflow: hidden} 
+.left 	{ position: absolute; top:0; left:0; right: 50%; bottom: 0;
+		  padding-left: 1%; border:solid #000; border-width: 0 1px 0 0; overflow: hidden}
+.right	{ position: absolute; top:0; left:50%; right: 0; bottom: 0;
+		  padding-left: 1%; border:solid #000; border-width: 0 0 0 0; overflow: hidden}
+
+.gray {
+	background: gray;
+	color: white;
+}
+
+.white {
+	background: white;
+	color: black;
+}
+
+.tr.blue {
+	background: blue;
+	color: white;
+}
+
+.centered {
+	padding: 15%;
+	text-align: center;
+}
+
+.scroll {
+	overflow-y: auto;
+}
+
+.you {
+	padding: 10%;
+	padding-top: 5%;
+	width: 60%;
+	height: 50%;
+	background: green;
+}
+
+
+</style>
+<div class="tl gray scroll">
+	<h2>The Word Testing</h2>
+	Environment: 
+	<select id="stage-select" onchange="setRoomWebSocket()">
+		<option value="wss://3fi9h53479.execute-api.us-east-1.amazonaws.com/apptest">Apptest</option>
+		<option value="wss://l0zcck7ei5.execute-api.us-east-1.amazonaws.com/dev">Develop</option>
+		<option value="wss://3unowgxe3i.execute-api.us-east-1.amazonaws.com/prod">Production</option>
+		<option value="wss://2w6nn0ngti.execute-api.us-east-1.amazonaws.com/gio2">Gio2</option>
+	</select>
+	<br>
+	Join Code: <input type="text" id="joinCodeIn" value="Join Code">  Room Id: <input type="text" id="roomIdIn" value = "Room ID">
+	<br>
+	User Id: <input type="text" id="userIdIn" value="User Id">
+	<h3>Table Functions</h3>
+	<button type="button" onclick="tableWebsocket()" id="tableConnect">Table - Connect</button>
+	<button type="button" onclick="createRoom()" id="tableCreateRoom">Table - Create Room</button>
+	<button type="button" onclick="startGame()" id="tableStartGame">Table - Start Game</button>
+	Max Rounds: <input type="text" id="maxRoundsIn" value="Max Rounds">
+	Table Name: <input type="text" id="tableNameIn" value="Table Name">
+	<button type="button" onclick="nextRound()" id="tableNextRound">Table - Next Round</button>
+	<button type="button" onclick="endGame()" id="tableEndGame">Table - End Game</button>
+	<button type="button" onclick="tableRejoin()" id="tableRejoin">Table - Rejoin</button>
+	<button type="button" onclick="tablePing()" id="tablePing">Table - Ping</button>
+	Player ID to Kick: <input type="text" id="playerIdKickIn" value="Player Id...">
+	<button type="button" onclick="kickPlayer()" id="tableKickPlayer">Table - Kick</button>
+	<br>
+	<h3>User Functions</h3>
+	<button type="button" onclick="userWebsocket()" id="userConnectButton">User - Connect</button>
+	<button type="button" onclick="userRejoin()" id="userRejoin">User - Rejoin</button>
+	<button type="button" onclick="userUpdateStatus()">User - Update Status</button>
+	Player ID: <input type="text" id="playerIdIn" value="Player Id...">
+	<button type="button" onclick="userLeaveRoom()" id="tableRejoin">User - Leave Room</button>
+	<button type="button" onclick="userPing()" id="userPing">User - Ping</button>
+	<br>
+	User Name: <input type="text" id="userNameIn" value="Username" >
+	<button type="button" id="userJoinRoomButton" onclick="joinRoom()">User - Join Room</button>
+	<br>
+	Clue: <input type="text" id="clueIn" value="Insert Clue...">
+	<button type="button" onclick="submitClue()" id="userSubmitClueButton" >User - Submit Clue</button>
+	<br><br>
+	Remove Clue Player ID: <input type="text" id="updateCluesIn" value="6" >
+	<button type="button" onclick="updateClues()" id="judgeUpdateCluesButton">Judge - Update Clues</button>
+	<button type="button" onclick="submitClues()" id="judgeSubmitCluesButton">Judge - Submit Clues</button>
+	<br><br>
+	Guess: <input type="text" id="guessIn" value="Guess" >
+	<button type="button" onclick="submitGuess()" id="activeSubmitGuessButton">Active - Submit Guess</button>
+	<br>
+	<button type="button" onclick="rightGuess()" id="judgeRightGuessButton">Judge - Right Guess</button>
+	<button type="button" onclick="wrongGuess()" id="judgeWrongGuessButton">Judge - Wrong Guess</button>
+</div>
+<div class="bl white scroll">
+	<h3>Command Log</h3>
+	<button type="button" onclick="toggleCommandLog()">Toggle Command Log</button><br>
+	<pre id="commandLogOutput"></pre>
+</div>
+<div class="tr">
+	<div class="tl">
+		<div class="tl">
+			Current Player ID
+			<br>
+			<input type="text" id="playerId" value="undefined" size="10">
+		</div>
+		<div class="tr">
+			Game Phase
+			<br>
+			<input type="text" id="gamePhase" value="undefined" size="10">
+		</div>
+		<div class="bl">
+			Mystery Word
+			<br>
+			<input type="text" id="mysteryWord" value="undefined" size="10">
+			<br>
+		</div>
+		<div class="br">
+			Guess
+			<br>
+			<input type="text" id="guess" value="undefined" size="10">
+		</div>
+	</div>
+	<div class="tr">
+		<div class="tl">
+			Active Player ID
+			<br>
+			<input type="text" id="activePlayerId" value="undefined" size="10">
+			<div id="activePlayerFlag" class="you"></div>
+		</div>
+		<div class="tr">
+			Judge Player ID
+			<br>
+			<input type="text" id="judgePlayerId" value="undefined" size="10">
+			<div id="judgePlayerFlag" class="you"></div>
+		</div>
+		<div class="bl">
+			Current Round
+			<br>
+			<input type="text" id="currentRound" value="undefined" size="10">
+		</div>
+		<div class="br">
+			Users
+			<pre id="usersOutput"></pre>
+		</div>
+	</div>
+	<div class="bl">
+		<div class="left">
+			Valid Clues
+			<pre id="validCluesOutput"></pre>
+		</div>
+		<div class="right">
+			Denied Clues
+			<pre id="deniedCluesOutput"></pre>
+		</div>
+	</div>
+	<div class="br">
+		<div class="left">
+			Right Words
+			<pre id="rightWordsOutput"></pre>
+		</div>
+		<div class="right">
+			Wrong Words
+			<pre id="wrongWordsOutput"></pre>
+		</div>
+	</div>
+</div>
+<div class="br scroll">
+	<h3>Room Object</h3>
+	<button type="button" onclick="toggleRoomOutput()">Toggle Room Output</button>
+	<button type="button" onclick="getRoom()">Refresh Room</button>
+	<button type="button" onclick="writeToRoomOutput('')">Clear Room</button>
+	<pre id="roomOutput"></pre>
+</div>
