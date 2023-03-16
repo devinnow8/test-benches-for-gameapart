@@ -954,14 +954,22 @@
   }
 
   function tableUpdateStatus() {
+    const subGameCode = document.getElementById("sub_game_code").value
     var msg = {
       action: "update-status",
       roomId: document.getElementById("roomIdIn").value,
       tableTopName: document.getElementById("tableTopNameIn").value,
-      subGameCode: document.getElementById("sub_game_code").value,
+      subGameCode,
       destination: document.getElementById("destination").value,
       debug: true,
     };
+    if (subGameCode === "LT") {
+      msg.top_logo = "tempLink"
+      msg.background = "tempLink"
+      msg.top_logo_mobile = "tempLink"
+      msg.background_mobile = "tempLink"
+      msg.editions = ["Global", "All"]
+    }
     writeToTableCommandLogOutput(JSON.stringify(msg));
     tableWebsocket.send(JSON.stringify(msg));
   }
@@ -1446,13 +1454,13 @@
   Sub Game:
   <select id="sub_game_code">
     <option value="LTS">Lightning Trivia Submit</option>
+    <option value="LT">Lightning Trivia</option>
     <option value="WELL">Meditation</option>
     <option value="TTL">Two Truths and a Lie</option>
     <option value="TOT">Tip of the Tongue</option>
     <option value="CCS">Caption Contest Submit</option>
     <option value="CC">Caption Contest</option>
     <option value="SYP">Show Your Photos</option>
-    <option value="LT">Lightning Trivia</option>
   </select>
   <button type="button" onclick="tableHostRejoin()">Table - Host Rejoin</button>
   <button type="button" onclick="tableUpdateStatus()">
