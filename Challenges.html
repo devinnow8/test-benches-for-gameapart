@@ -23,6 +23,27 @@
       userResponseLogOutput = document.getElementById("userResponseLogOutput");
     }
 
+
+
+  function getSelectValues(select) {
+
+
+    var result = [];
+    var options = select && select.options;
+    var opt;
+
+    for (var i = 0, iLen = options.length; i < iLen; i++) {
+      opt = options[i];
+
+      if (opt.selected) {
+        result.push(opt.value || opt.text);
+      }
+    }
+    return result;
+  }
+
+
+
     function tableConnectWebsocket() {
       var wsUrl = document.getElementById("stage-select").value;
       tableWebsocket = new WebSocket(wsUrl);
@@ -43,9 +64,9 @@
     function tableOnMessage(evt) {
       var jsonObject = JSON.parse(evt.data);
       writeToTableResponseLogOutput(JSON.stringify(jsonObject, null, 4));
-      if (has(jsonObject, 'challenge.challenge_id')) {
-        document.getElementById("challenge-id").value = jsonObject.challenge.challenge_id;
-        document.getElementById("team-code").value = jsonObject.challenge.team_code;
+      if (has(jsonObject, 'challenge_details.challenge_id')) {
+        document.getElementById("challenge-id").value = jsonObject.challenge_details.challenge_id;
+        document.getElementById("team-code").value = jsonObject.challenge_details.team_code;
         writeToRoomOutput(JSON.stringify(JSON.parse(evt.data), null, 4))
       }
     }
@@ -68,42 +89,35 @@
     }
     function userOnMessage(evt) {
       var jsonObject = JSON.parse(evt.data);
-      if (has(jsonObject, 'challenge.challenge_id')) {
-        document.getElementById("challenge-id").value = jsonObject.session.challenge_id;
-        document.getElementById("team-code").value = jsonObject.session.team_code;
-        // getChallenge();
-      }
       writeToUserResponseLogOutput(JSON.stringify(JSON.parse(evt.data), null, 4));
+      if (has(jsonObject, 'challenge_details.challenge_id')) {
+        document.getElementById("challenge-id").value = jsonObject.challenge_details.challenge_id;
+        document.getElementById("team-code").value = jsonObject.challenge_details.team_code;
+        // getChallenge();
+        writeToRoomOutput(JSON.stringify(JSON.parse(evt.data), null, 4))
+      }
     }
     // #endregion
 
     // #region challengeWebsocket functions
     function getChallenge() {
+      const table = getSelectValues(document.getElementById("challenge-table-select"))
       var msg = {
         action: "challenge-get",
-        challenge_id: document.getElementById("challenge-id"),
-        user_id: "",
-        table: document.getElementById("challenge-table-select").value
+        challenge_id: document.getElementById("challenge-id").value,
+        table
       };
-      roomSocket.send(JSON.stringify(msg));
-    }
-
-    function getSelectValues() {
-      const select = document.getElementById("Participants")
-
-      var result = [];
-      var options = select && select.options;
-      var opt;
-
-      for (var i = 0, iLen = options.length; i < iLen; i++) {
-        opt = options[i];
-
-        if (opt.selected) {
-          result.push(opt.value || opt.text);
-        }
+      if (table.includes("Details")) {
+        msg.team_code = document.getElementById("team-code").value
       }
-      return result;
+      if (table.includes("Data")) {
+        msg.user_id = document.getElementById("userUserIdIn").value
+      }
+      writeToTableCommandLogOutput(JSON.stringify(msg));
+      tableWebsocket.send(JSON.stringify(msg));
     }
+
+
 
     function createChallenge() {
       var msg = {
@@ -122,7 +136,7 @@
         show_data: document.getElementById("show_data_select").value == "true" ? true : false,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
-        participants: getSelectValues()
+        participants: getSelectValues(document.getElementById("Participants"))
       };
 
       writeToTableCommandLogOutput(JSON.stringify(msg));
@@ -147,11 +161,31 @@
         show_data: document.getElementById("show_data_select").value == "true" ? true : false,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
-        participants: getSelectValues()
+        participants: getSelectValues(document.getElementById("Participants"))
       };
       writeToTableCommandLogOutput(JSON.stringify(msg));
       tableWebsocket.send(JSON.stringify(msg));
     }
+
+
+
+  function ChallengeEntry() {
+    var msg = {
+      action: "challenge-entry",
+      team_code: document.getElementById("team-code").value,
+      challenge_id: document.getElementById("challenge-id").value,
+      user_id: document.getElementById("userUserIdIn").value,
+      entry: Number(document.getElementById("entryid").value),
+      entry_action: document.getElementById("entry-action-select").value,
+    };
+
+    const entry_ts = document.getElementById("entry-ts-id").value
+    if (entry_ts !== "entry_ts") {
+      msg.entry_ts = entry_ts
+    }
+    writeToUserCommandLogOutput(JSON.stringify(msg));
+    userWebsocket.send(JSON.stringify(msg));
+  }
 
     // #endregion
 
@@ -184,6 +218,19 @@
         tableResponseLogOutput.appendChild(pre);
       }
     }
+                                                                                                                                function writeToUserResponseLogOutput(message) {
+                                                                                                                                  var pre = document.createElement("p");
+                                                                                                                                  pre.style.wordWrap = "break-word";
+                                                                                                                                  pre.innerHTML = Date().toString() + "\n" + message;
+                                                                                                                                  if (userResponseLogOutput.hasChildNodes()) {
+                                                                                                                                    userResponseLogOutput.insertBefore(
+                                                                                                                                      pre,
+                                                                                                                                      userResponseLogOutput.childNodes[0],
+                                                                                                                                    );
+                                                                                                                                  } else {
+                                                                                                                                    userResponseLogOutput.appendChild(pre);
+                                                                                                                                  }
+                                                                                                                                }
     function writeToUserCommandLogOutput(message) {
       var pre = document.createElement("p");
       pre.style.wordWrap = "break-word";
@@ -330,11 +377,20 @@
     <button type="button" onclick="tableConnectWebsocket()">Table - Connect</button>
     <br>
     <input type="text" id="nameId" value="name">
-    <input type="text" id="typeId" value="type">
+    <label for="typeId">type_select</label>
+    <select id="typeId">
+      <option value="Cooperative">Cooperative</option>
+      <option value="Competitive">Competitive</option>
+    </select>
     <input type="text" id="descriptionId" value="description">
     <input type="text" value="unit" id="unitId">
     <input type="text" value="goal" id="goalId">
-    <input type="text" value="goal_type" id="goal_type_id">
+    <label for="goal_type_id">goal_type_select</label>
+    <select id="goal_type_id">
+      <option value="Cumulative">Cumulative</option>
+      <option value="Improvement">Improvement</option>
+      <option value="First Past Goal Post">First Past Goal Post</option>
+    </select>
     <label for="start_date">start_date</label>
     <input type="date" value="start_date" id="start_date_id">
     <label for="end_date">end_date</label>
@@ -351,8 +407,8 @@
     </select>
     <label for="archived_select">archived_select</label>
     <select id="archived_select">
-      <option value=true>true</option>
       <option value=false>false</option>
+      <option value=true>true</option>
     </select>
     <br>
     <label for="Participants">Participants</label>
@@ -376,21 +432,36 @@
     </select>
     <button type="button" onclick="createChallenge()">Table - Create Challenge</button>
     <button type="button" onclick="updateChallenge()">Table - Update Challenge</button>
-    <button type="button" onclick="archiveChallenge()">Table - Update Challenge</button>
+    <button type="button" onclick="archiveChallenge()">Table - Archive Challenge</button>
+    <label for="challenge-table-select">challengesTable</label>
+    <select id="challenge-table-select" multiple>
+      <option value="Details">Details</option>
+      <option value="Data">Data</option>
+    </select>
+    <button type="button" onclick="getChallenge()">Table - GetChallenge</button>
     <h3>User Functions</h3>
     <button type="button" onclick="userConnectWebsocket()">User - Connect</button>
     <br>
-    <button type="button" onclick="userJoinRoom()">User - Join Room</button>
     <input type="text" id="userUserIdIn" value="User Id">
     <input type="text" id="userNameIn" value="userName">
     <input type="text" id="userProfileImageIn"
-      value="https://www.thesun.co.uk/wp-content/uploads/2018/11/NINTCHDBPICT000058057150-e1541188679993.jpg">
+    value="https://www.thesun.co.uk/wp-content/uploads/2018/11/NINTCHDBPICT000058057150-e1541188679993.jpg">
     <input type="text" id="userPlayerIdIn" value="userPlayerId">
+    <br>
+    <label for="entry-action-select">Entry Action</label>
+    <select name="entry-action-select" id="entry-action-select">
+      <option value="Add">Add</option>
+      <option value="Update">Update</option>
+      <option value="Delete">Delete</option>
+    </select>
+    <input type="text" id="entryid" value="entry">
+    <input type="text" id="entry-ts-id" value="entry_ts">
+    <button type="button" onclick="ChallengeEntry()">User - Challenge Entry</button>
     <br><br>
   </div>
   <div class="roomObject white scroll">
     <h2>Room Object</h2>
-    <button type="button" onclick="getChallenge()">Table - GetChallenge</button>
+
     <pre id="roomOutput"></pre>
   </div>
   <div class="tableCommandLog white scroll">
