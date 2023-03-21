@@ -133,7 +133,7 @@
         goal_type: document.getElementById("goal_type_id").value,
         start_date: document.getElementById("start_date_id").value == "" ? new Date() : document.getElementById("start_date_id").value,
         end_date: document.getElementById("end_date_id").value == "" ? new Date() : document.getElementById("end_date_id").value,
-        show_data: document.getElementById("show_data_select").value == "true" ? true : false,
+        show_data: document.getElementById("show_data_select").value,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
         participants: getSelectValues(document.getElementById("Participants"))
@@ -186,6 +186,18 @@
     writeToUserCommandLogOutput(JSON.stringify(msg));
     userWebsocket.send(JSON.stringify(msg));
   }
+
+                                              function archiveChallenge() {
+                                                var msg = {
+                                                  action: "challenge-archive",
+                                                  team_code: document.getElementById("team-code").value,
+                                                  challenge_id: document.getElementById("challenge-id").value,
+                                                  archived: true
+
+                                                };
+                                                writeToTableCommandLogOutput(JSON.stringify(msg));
+                                                tableWebsocket.send(JSON.stringify(msg));
+                                              }
 
     // #endregion
 
@@ -395,11 +407,13 @@
     <input type="date" value="start_date" id="start_date_id">
     <label for="end_date">end_date</label>
     <input type="date" value="end_date" id="end_date_id">
-    <label for="show_data_select">show_data_select</label>
-    <select id="show_data_select">
+    <!-- <label for="show_data_select">show_data_select</label> -->
+    <input type="text" value="show_data" id="show_data_select">
+    
+    <!-- <select id="show_data_select">
       <option value=true>true</option>
       <option value=false>false</option>
-    </select>
+    </select> -->
     <label for="weekends_select">weekends_select</label>
     <select id="weekends_select">
       <option value=true>true</option>
