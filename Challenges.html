@@ -104,13 +104,22 @@
       const table = getSelectValues(document.getElementById("challenge-table-select"))
       var msg = {
         action: "challenge-get",
-        challenge_id: document.getElementById("challenge-id").value,
+        // challenge_id: document.getElementById("challenge-id").value,
         table
       };
       if (table.includes("Details")) {
         msg.team_code = document.getElementById("team-code").value
+        msg.challenge_id = document.getElementById("challenge-id").value
       }
       if (table.includes("Data")) {
+        msg.user_id = document.getElementById("userUserIdIn").value
+        msg.challenge_id = document.getElementById("challenge-id").value
+      }
+      if (table.includes("teamChallenges")) {
+        msg.team_code = document.getElementById("team-code").value
+      }
+      if (table.includes("userChallenges")) {
+        msg.team_code = document.getElementById("team-code").value
         msg.user_id = document.getElementById("userUserIdIn").value
       }
       writeToTableCommandLogOutput(JSON.stringify(msg));
@@ -448,9 +457,11 @@
     <button type="button" onclick="updateChallenge()">Table - Update Challenge</button>
     <button type="button" onclick="archiveChallenge()">Table - Archive Challenge</button>
     <label for="challenge-table-select">challengesTable</label>
-    <select id="challenge-table-select" multiple>
+    <select id="challenge-table-select" multiple style="width: 120px; height: 80px;">
       <option value="Details">Details</option>
       <option value="Data">Data</option>
+      <option value="teamChallenges">teamChallenges</option>
+      <option value="userChallenges">userChallenges</option>
     </select>
     <button type="button" onclick="getChallenge()">Table - GetChallenge</button>
     <h3>User Functions</h3>
