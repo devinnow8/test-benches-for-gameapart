@@ -145,6 +145,7 @@
         show_data: document.getElementById("show_data_select").value,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
+        challenge_image: document.getElementById("challenge_image").value,
         participants: getSelectValues(document.getElementById("Participants"))
       };
 
@@ -433,6 +434,7 @@
       <option value=false>false</option>
       <option value=true>true</option>
     </select>
+    <input type="text" value="challenge_image" id="challenge_image">
     <br>
     <label for="Participants">Participants</label>
     <select name="Participants" id="Participants" multiple>
