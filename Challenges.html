@@ -174,7 +174,7 @@
         goal_type: document.getElementById("goal_type_id").value,
         start_date: document.getElementById("start_date_id").value == "" ? new Date() : document.getElementById("start_date_id").value,
         end_date: document.getElementById("end_date_id").value == "" ? new Date() : document.getElementById("end_date_id").value,
-        show_data: document.getElementById("show_data_select").value == "true" ? true : false,
+        show_data: document.getElementById("show_data_select").value,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
         participants: getSelectValues(document.getElementById("Participants")).map(item => {
