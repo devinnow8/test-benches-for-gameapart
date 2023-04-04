@@ -146,7 +146,13 @@
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
         challenge_image: document.getElementById("challenge_image").value,
-        participants: getSelectValues(document.getElementById("Participants"))
+        participants: getSelectValues(document.getElementById("Participants")).map(item => {
+          return {
+            user_id: item,
+            profile_img: `profile_img-${item}`,
+            display_name: `display_name-${item}`
+          }
+        })
       };
 
       writeToTableCommandLogOutput(JSON.stringify(msg));
@@ -171,7 +177,14 @@
         show_data: document.getElementById("show_data_select").value == "true" ? true : false,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
-        participants: getSelectValues(document.getElementById("Participants"))
+        participants: getSelectValues(document.getElementById("Participants")).map(item => {
+          return {
+            user_id: item,
+            profile_img: `profile_img-${item}`,
+            display_name: `display_name-${item}`
+          }
+        })
+        
       };
       writeToTableCommandLogOutput(JSON.stringify(msg));
       tableWebsocket.send(JSON.stringify(msg));
