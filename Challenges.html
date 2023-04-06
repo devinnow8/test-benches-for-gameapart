@@ -145,15 +145,17 @@
         show_data: document.getElementById("show_data_select").value,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
-        challenge_image: document.getElementById("challenge_image").value,
         participants: getSelectValues(document.getElementById("Participants")).map(item => {
           return {
             user_id: item,
-            profile_img: `profile_img-${item}`,
+            // profile_img: `profile_img-${item}`,
             display_name: `display_name-${item}`
           }
         })
       };
+      if(document.getElementById("challenge_image").value != "challenge_image"){
+        msg.challenge_image = document.getElementById("challenge_image").value
+      }
 
       writeToTableCommandLogOutput(JSON.stringify(msg));
       tableWebsocket.send(JSON.stringify(msg));
@@ -180,12 +182,15 @@
         participants: getSelectValues(document.getElementById("Participants")).map(item => {
           return {
             user_id: item,
-            profile_img: `profile_img-${item}`,
+            // profile_img: `profile_img-${item}`,
             display_name: `display_name-${item}`
           }
         })
         
       };
+      if(document.getElementById("challenge_image").value != "challenge_image"){
+        msg.challenge_image = document.getElementById("challenge_image").value
+      }
       writeToTableCommandLogOutput(JSON.stringify(msg));
       tableWebsocket.send(JSON.stringify(msg));
     }
