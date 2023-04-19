@@ -144,6 +144,7 @@
         end_date: document.getElementById("end_date_id").value == "" ? new Date() : document.getElementById("end_date_id").value,
         show_data: document.getElementById("show_data_select").value,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
+        end_on_goal: document.getElementById("end_on_goal").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
         participants: getSelectValues(document.getElementById("Participants")).map(item => {
           return {
@@ -178,6 +179,7 @@
         end_date: document.getElementById("end_date_id").value == "" ? new Date() : document.getElementById("end_date_id").value,
         show_data: document.getElementById("show_data_select").value,
         weekends: document.getElementById("weekends_select").value == "true" ? true : false,
+        end_on_goal: document.getElementById("end_on_goal").value == "true" ? true : false,
         archived: document.getElementById("archived_select").value == "true" ? true : false,
         participants: getSelectValues(document.getElementById("Participants")).map(item => {
           return {
@@ -215,17 +217,26 @@
     userWebsocket.send(JSON.stringify(msg));
   }
 
-                                              function archiveChallenge() {
-                                                var msg = {
-                                                  action: "challenge-archive",
-                                                  team_code: document.getElementById("team-code").value,
-                                                  challenge_id: document.getElementById("challenge-id").value,
-                                                  archived: true
+  function archiveChallenge() {
+    var msg = {
+      action: "challenge-archive",
+      team_code: document.getElementById("team-code").value,
+      challenge_id: document.getElementById("challenge-id").value,
+      archived: true
 
-                                                };
-                                                writeToTableCommandLogOutput(JSON.stringify(msg));
-                                                tableWebsocket.send(JSON.stringify(msg));
-                                              }
+    };
+    writeToTableCommandLogOutput(JSON.stringify(msg));
+    tableWebsocket.send(JSON.stringify(msg));
+  }
+  function deleteChallenge() {
+    var msg = {
+      action: "challenge-delete",
+      team_code: document.getElementById("team-code").value,
+      challenge_id: document.getElementById("challenge-id").value,
+    };
+    writeToTableCommandLogOutput(JSON.stringify(msg));
+    tableWebsocket.send(JSON.stringify(msg));
+  }
 
     // #endregion
 
@@ -403,8 +414,8 @@
     <h2>Challenges Testing</h2>
     Environment:
     <select id="stage-select"">
-      <option value="wss://3fi9h53479.execute-api.us-east-1.amazonaws.com/apptest">Apptest</option>
       <option value=" ws://localhost:3001">localhost</option>
+      <option value="wss://3fi9h53479.execute-api.us-east-1.amazonaws.com/apptest">Apptest</option>
       <option value="wss://l0zcck7ei5.execute-api.us-east-1.amazonaws.com/dev">Develop</option>
       <option value="wss://3unowgxe3i.execute-api.us-east-1.amazonaws.com/prod">Production</option>
     </select>
@@ -424,7 +435,8 @@
     </select>
     <input type="text" id="descriptionId" value="description">
     <input type="text" value="unit" id="unitId">
-    <input type="text" value="goal" id="goalId">
+    <label for="goalId">goal</label>
+    <input type="number" value="11" id="goalId">
     <label for="goal_type_id">goal_type_select</label>
     <select id="goal_type_id">
       <option value="Cumulative">Cumulative</option>
@@ -442,6 +454,11 @@
       <option value=true>true</option>
       <option value=false>false</option>
     </select> -->
+    <label for="end_on_goal">end_on_goal_select</label>
+    <select id="end_on_goal">
+      <option value="false">false</option>
+      <option value="true">true</option>
+    </select>
     <label for="weekends_select">weekends_select</label>
     <select id="weekends_select">
       <option value=true>true</option>
@@ -476,6 +493,7 @@
     <button type="button" onclick="createChallenge()">Table - Create Challenge</button>
     <button type="button" onclick="updateChallenge()">Table - Update Challenge</button>
     <button type="button" onclick="archiveChallenge()">Table - Archive Challenge</button>
+    <button type="button" onclick="deleteChallenge()">Table - Delete Challenge</button>
     <label for="challenge-table-select">challengesTable</label>
     <select id="challenge-table-select" multiple style="width: 120px; height: 80px;">
       <option value="Details">Details</option>
