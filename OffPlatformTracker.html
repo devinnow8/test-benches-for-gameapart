@@ -109,6 +109,18 @@
       tableWebsocket.send(JSON.stringify(msg));
     }
 
+    function getOptOptions() {
+      var msg = {
+        action: "opt-options-get",
+        team_code: document.getElementById("team-code").value
+      };
+      writeToTableCommandLogOutput(JSON.stringify(msg));
+      tableWebsocket.send(JSON.stringify(msg));
+    }
+
+
+    
+
     function createOpt() {
       var msg = {
         action: "opt-create",
@@ -408,6 +420,7 @@
     <button type="button" onclick="deleteOpt()">Table - DeleteOpt</button>
     <!-- <button type="button" onclick="archiveChallenge()">Table - Archive Challenge</button> -->
     <button type="button" onclick="getOpt()">Table - GetOpt</button>
+    <button type="button" onclick="getOptOptions()">Table - GetOptOptions</button>
     <br>
     <label for="opt_action_select">opt_action_select</label>
     <select id="opt_action_select">
