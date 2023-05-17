@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+
+<head></head>
+<meta charset="utf-8" />
+<title>Wellness Activities</title>
+
+<script language="javascript" type="text/javascript">
+  var names = [
+    "Allison",
+    "Arthur",
+    "Ana",
+    "Alex",
+    "Arlene",
+    "Alberto",
+    "Barry",
+    "Bertha",
+    "Bill",
+    "Bonnie",
+    "Bret",
+    "Beryl",
+    "Chantal",
+    "Cristobal",
+    "Claudette",
+    "Charley",
+    "Cindy",
+    "Chris",
+    "Dean",
+    "Dolly",
+    "Danny",
+    "Danielle",
+    "Dennis",
+    "Debby",
+    "Erin",
+    "Edouard",
+    "Erika",
+    "Earl",
+    "Emily",
+    "Ernesto",
+    "Felix",
+    "Fay",
+    "Fabian",
+    "Frances",
+    "Franklin",
+    "Florence",
+    "Gabielle",
+    "Gustav",
+    "Grace",
+    "Gaston",
+    "Gert",
+    "Gordon",
+    "Humberto",
+    "Hanna",
+    "Henri",
+    "Hermine",
+    "Harvey",
+    "Helene",
+    "Iris",
+    "Isidore",
+    "Isabel",
+    "Ivan",
+    "Irene",
+    "Isaac",
+    "Jerry",
+    "Josephine",
+    "Juan",
+    "Jeanne",
+    "Jose",
+    "Joyce",
+    "Karen",
+    "Kyle",
+    "Kate",
+    "Karl",
+    "Katrina",
+    "Kirk",
+    "Lorenzo",
+    "Lili",
+    "Larry",
+    "Lisa",
+    "Lee",
+    "Leslie",
+    "Michelle",
+    "Marco",
+    "Mindy",
+    "Maria",
+    "Michael",
+    "Noel",
+    "Nana",
+    "Nicholas",
+    "Nicole",
+    "Nate",
+    "Nadine",
+    "Olga",
+    "Omar",
+    "Odette",
+    "Otto",
+    "Ophelia",
+    "Oscar",
+    "Pablo",
+    "Paloma",
+    "Peter",
+    "Paula",
+    "Philippe",
+    "Patty",
+    "Rebekah",
+    "Rene",
+    "Rose",
+    "Richard",
+    "Rita",
+    "Rafael",
+    "Sebastien",
+    "Sally",
+    "Sam",
+    "Shary",
+    "Stan",
+    "Sandy",
+    "Tanya",
+    "Teddy",
+    "Teresa",
+    "Tomas",
+    "Tammy",
+    "Tony",
+    "Van",
+    "Vicky",
+    "Victor",
+    "Virginie",
+    "Vince",
+    "Valerie",
+    "Wendy",
+    "Wilfred",
+    "Wanda",
+    "Walter",
+    "Wilma",
+    "William",
+    "Kumiko",
+    "Aki",
+    "Miharu",
+    "Chiaki",
+    "Michiyo",
+    "Itoe",
+    "Nanaho",
+    "Reina",
+    "Emi",
+    "Yumi",
+    "Ayumi",
+    "Kaori",
+    "Sayuri",
+    "Rie",
+    "Miyuki",
+    "Hitomi",
+    "Naoko",
+    "Miwa",
+    "Etsuko",
+    "Akane",
+    "Kazuko",
+    "Miyako",
+    "Youko",
+    "Sachiko",
+    "Mieko",
+    "Toshie",
+    "Junko",
+  ];
+  var init_username = names[Math.floor(Math.random() * names.length)];
+  var profile_img = [
+    "https://www.thesun.co.uk/wp-content/uploads/2018/11/NINTCHDBPICT000058057150-e1541188679993.jpg",
+    "https://www.freepngimg.com/download/youtube/63841-profile-twitch-youtube-avatar-discord-free-download-image.png",
+    "https://www.freepngimg.com/thumb/pokemon/20045-9-pokemon-ash-transparent-thumb.png",
+    "https://www.freepngimg.com/thumb/pokemon/20252-5-pokemon-transparent-background-thumb.png",
+    "https://www.freepngimg.com/thumb/minecraft/7-2-minecraft-character-png-thumb.png",
+    "https://www.freepngimg.com/thumb/sonic_the_hedgehog/2-2-sonic-the-hedgehog-png-11-thumb.png",
+    "https://www.freepngimg.com/thumb/animation/4-2-animation-png-pic-thumb.png",
+    "https://www.freepngimg.com/thumb/health/22905-6-health-file-thumb.png",
+    "https://www.freepngimg.com/thumb/emoji/3-2-love-hearts-eyes-emoji-png-thumb.png",
+    "https://www.freepngimg.com/thumb/wedding/4-2-wedding-picture-thumb.png",
+    "https://www.freepngimg.com/thumb/orange/19-orange-png-image-download-thumb.png",
+    "https://www.freepngimg.com/thumb/juice/11-juice-png-image-thumb.png",
+    "https://www.freepngimg.com/thumb/pineapple/2-pineapple-png-image-download-thumb.png",
+    "https://www.freepngimg.com/thumb/sri_ganesh/1-2-sri-ganesh-picture-thumb.png",
+    "https://www.freepngimg.com/thumb/cup/11-coffee-cup-png-image-thumb.png",
+    "https://www.freepngimg.com/thumb/sunglasses/64543-editing-sunglass-free-transparent-image-hq-thumb.png",
+    "https://www.freepngimg.com/thumb/suit/3-suit-png-image-thumb.png",
+    "https://www.freepngimg.com/thumb/hat/3-hat-png-image-thumb.png",
+    "https://www.freepngimg.com/thumb/guitar/3-black-electric-guitar-png-image-thumb.png",
+    "https://www.freepngimg.com/thumb/bottle/3-champaign-bottle-png-image-thumb.png",
+    "https://www.freepngimg.com/thumb/spiderman/1-2-spider-man-download-png-thumb.png",
+    "https://www.freepngimg.com/thumb/despicable_me/80876-me-rush-toy-minion-dave-despicable-stuffed-thumb.png",
+    "https://www.freepngimg.com/thumb/batman/3-2-batman-logo-png-thumb.png",
+    "https://www.freepngimg.com/thumb/superman_logo/2-2-superman-logo-png-file-thumb.png",
+    "https://www.freepngimg.com/thumb/iron_man/1-2-iron-man-picture-thumb.png",
+    "https://www.freepngimg.com/thumb/the_boss_baby/29460-6-the-boss-baby-file-thumb.png",
+    "https://www.freepngimg.com/thumb/deadpool/9-2-cute-deadpool-chibi-png-thumb.png",
+    "https://www.freepngimg.com/thumb/iron_man/4-2-iron-man-png-hd-thumb.png",
+    "https://www.freepngimg.com/thumb/batman/10-2-batman-joker-smile-png-thumb.png",
+    "https://www.freepngimg.com/thumb/hulk/20573-3-hulk-transparent-image-thumb.png",
+    "https://www.freepngimg.com/thumb/car/31216-3-car-transparent-thumb.png",
+    "https://www.freepngimg.com/thumb/bike/23054-6-motorbike-hd-thumb.png",
+    "https://www.freepngimg.com/thumb/bus/3-bus-png-image-thumb.png",
+    "https://www.freepngimg.com/thumb/bugatti/33018-7-bugatti-clipart-thumb.png",
+    "https://www.freepngimg.com/thumb/bike/23334-4-motorbike-transparent-image-thumb.png",
+    "https://www.freepngimg.com/thumb/car/31564-6-car-picture-thumb.png",
+    "https://www.freepngimg.com/thumb/bugatti/33017-6-bugatti-free-download-thumb.png",
+    "https://www.freepngimg.com/thumb/ship/8-ship-png-image-thumb.png",
+    "https://www.freepngimg.com/thumb/train/29482-6-train-clipart-thumb.png",
+  ];
+  var init_profile_img =
+    profile_img[Math.floor(Math.random() * profile_img.length)];
+  var ids = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32",
+    "33",
+    "34",
+    "35",
+    "36",
+    "37",
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51",
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+    "61",
+    "62",
+    "63",
+    "64",
+    "65",
+    "66",
+    "67",
+    "68",
+    "69",
+    "70",
+    "71",
+    "72",
+    "73",
+    "74",
+    "75",
+    "76",
+    "77",
+    "78",
+    "79",
+    "80",
+    "81",
+    "82",
+    "83",
+    "84",
+    "85",
+    "86",
+    "87",
+    "88",
+    "89",
+    "90",
+    "91",
+    "92",
+    "93",
+    "94",
+    "95",
+    "96",
+    "97",
+    "98",
+    "99",
+    "100",
+    "101",
+    "102",
+    "103",
+    "104",
+    "105",
+    "106",
+    "107",
+    "108",
+    "109",
+    "110",
+    "111",
+    "112",
+    "113",
+    "114",
+    "115",
+    "116",
+    "117",
+    "118",
+    "119",
+    "120",
+    "121",
+    "122",
+    "123",
+    "124",
+    "125",
+    "126",
+    "127",
+    "128",
+    "129",
+    "130",
+    "131",
+    "132",
+    "133",
+    "134",
+    "135",
+    "136",
+    "137",
+    "138",
+    "139",
+    "140",
+    "141",
+    "142",
+    "143",
+    "144",
+    "145",
+    "146",
+    "147",
+    "148",
+    "149",
+    "150",
+    "151",
+    "152",
+    "153",
+    "154",
+    "155",
+    "156",
+    "157",
+    "158",
+    "159",
+    "160",
+    "161",
+    "162",
+    "163",
+    "164",
+    "165",
+    "166",
+    "167",
+    "168",
+    "169",
+    "170",
+    "171",
+    "172",
+    "173",
+    "174",
+    "175",
+    "176",
+    "177",
+    "178",
+    "179",
+    "180",
+    "181",
+    "182",
+    "183",
+    "184",
+    "185",
+    "186",
+    "187",
+    "188",
+    "189",
+    "190",
+    "191",
+    "192",
+    "193",
+    "194",
+    "195",
+    "196",
+    "197",
+    "198",
+    "199",
+    "200",
+    "201",
+    "202",
+    "203",
+    "204",
+    "205",
+    "206",
+    "207",
+    "208",
+    "209",
+    "210",
+    "211",
+    "212",
+    "213",
+    "214",
+    "215",
+    "216",
+    "217",
+    "218",
+    "219",
+    "220",
+    "221",
+    "222",
+    "223",
+    "224",
+    "225",
+    "226",
+    "227",
+    "228",
+    "229",
+    "230",
+    "231",
+    "232",
+    "233",
+    "234",
+    "235",
+    "236",
+    "237",
+    "238",
+    "239",
+    "240",
+    "241",
+    "242",
+    "243",
+    "244",
+    "245",
+    "246",
+    "247",
+    "248",
+    "249",
+    "250",
+    "251",
+    "252",
+    "253",
+    "254",
+    "255",
+    "256",
+    "257",
+    "258",
+    "259",
+    "260",
+    "261",
+    "262",
+    "263",
+    "264",
+    "265",
+    "266",
+    "267",
+    "268",
+    "269",
+    "270",
+    "271",
+    "272",
+    "273",
+    "274",
+    "275",
+    "276",
+    "277",
+    "278",
+    "279",
+    "280",
+    "281",
+    "282",
+    "283",
+    "284",
+    "285",
+    "286",
+    "287",
+    "288",
+    "289",
+    "290",
+    "291",
+    "292",
+    "293",
+    "294",
+    "295",
+    "296",
+    "297",
+    "298",
+    "299",
+    "300",
+    "301",
+    "302",
+    "303",
+    "304",
+    "305",
+    "306",
+    "307",
+    "308",
+    "309",
+    "310",
+    "311",
+    "312",
+    "313",
+    "314",
+    "315",
+    "316",
+    "317",
+    "318",
+    "319",
+    "320",
+    "321",
+    "322",
+    "323",
+    "324",
+    "325",
+    "326",
+    "327",
+    "328",
+    "329",
+    "330",
+    "331",
+    "332",
+    "333",
+    "334",
+    "335",
+    "336",
+    "337",
+    "338",
+    "339",
+    "340",
+    "341",
+    "342",
+    "343",
+    "344",
+    "345",
+    "346",
+    "347",
+    "348",
+    "349",
+    "350",
+    "351",
+    "352",
+    "353",
+    "354",
+    "355",
+    "356",
+    "357",
+    "358",
+    "359",
+    "360",
+    "361",
+    "362",
+    "363",
+    "364",
+    "365",
+    "366",
+    "367",
+    "368",
+    "369",
+    "370",
+    "371",
+    "372",
+    "373",
+    "374",
+    "375",
+    "376",
+    "377",
+    "378",
+    "379",
+    "380",
+    "381",
+    "382",
+    "383",
+    "384",
+    "385",
+    "386",
+    "387",
+    "388",
+    "389",
+    "390",
+    "391",
+    "392",
+    "393",
+    "394",
+    "395",
+    "396",
+    "397",
+    "398",
+    "399",
+    "400",
+    "401",
+    "402",
+    "403",
+    "404",
+    "405",
+    "406",
+    "407",
+    "408",
+    "409",
+    "410",
+    "411",
+    "412",
+    "413",
+    "414",
+    "415",
+    "416",
+    "417",
+    "418",
+    "419",
+    "420",
+    "421",
+    "422",
+    "423",
+    "424",
+    "425",
+    "426",
+    "427",
+    "428",
+    "429",
+    "430",
+    "431",
+    "432",
+    "433",
+    "434",
+    "435",
+    "436",
+    "437",
+    "438",
+    "439",
+    "440",
+    "441",
+    "442",
+    "443",
+    "444",
+    "445",
+    "446",
+    "447",
+    "448",
+    "449",
+    "450",
+    "451",
+    "452",
+    "453",
+    "454",
+    "455",
+    "456",
+    "457",
+    "458",
+    "459",
+    "460",
+    "461",
+    "462",
+    "463",
+    "464",
+    "465",
+    "466",
+    "467",
+    "468",
+    "469",
+    "470",
+    "471",
+    "472",
+    "473",
+    "474",
+    "475",
+    "476",
+    "477",
+    "478",
+    "479",
+    "480",
+    "481",
+    "482",
+    "483",
+    "484",
+    "485",
+    "486",
+    "487",
+    "488",
+    "489",
+    "490",
+    "491",
+    "492",
+    "493",
+    "494",
+    "495",
+    "496",
+    "497",
+    "498",
+    "499",
+    "500",
+  ];
+  var init_id = ids[Math.floor(Math.random() * ids.length)];
+  var roomSocket = null;
+
+  function init() {
+    //init() assigns element handlers to the variables
+    setRoomWebSocket();
+    roomOutput = document.getElementById("roomOutput");
+    tableCommandLogOutput = document.getElementById("tableCommandLogOutput");
+    tableResponseLogOutput = document.getElementById("tableResponseLogOutput");
+    userCommandLogOutput = document.getElementById("userCommandLogOutput");
+    userResponseLogOutput = document.getElementById("userResponseLogOutput");
+  }
+
+  function setRoomWebSocket() {
+    var wsUrl = document.getElementById("stage-select").value;
+    roomSocket = new WebSocket(wsUrl);
+    roomSocket.onmessage = function (evt) {
+      roomOnMessage(evt);
+    };
+    roomSocket.onclose = function (evt) {
+      roomOnClose(evt);
+    };
+  }
+
+  // #region roomWebsocket functions
+  function getRoom() {
+    var msg = {
+      action: "get-room",
+      joinCode: document.getElementById("joinCodeIn").value,
+    };
+    roomSocket.send(JSON.stringify(msg));
+  }
+
+  function roomOnMessage(evt) {
+    var jsonObject = JSON.parse(evt.data);
+    if (has(jsonObject, "room.host.user_id")) {
+      document.getElementById("userIdIn").value = jsonObject.room.host.user_id;
+    }
+    writeToTableResponseLogOutput(JSON.stringify(jsonObject, null, 4));
+    if (has(jsonObject, "join_code")) {
+      document.getElementById("roomIdIn").value = jsonObject.room.id;
+      document.getElementById("tableUserIdIn").value =
+        jsonObject.room.host.user_id;
+    }
+    writeToRoomOutput(JSON.stringify(JSON.parse(evt.data), null, 4));
+  }
+
+  function roomOnClose(evt) {
+    roomSocket();
+  }
+
+  // #endregion
+
+  // #region tableWebsocket functions
+  function tableConnectWebsocket() {
+    var wsUrl = document.getElementById("stage-select").value;
+    tableWebsocket = new WebSocket(wsUrl);
+    tableWebsocket.onopen = function (evt) {
+      tableOnOpen(evt);
+    };
+    tableWebsocket.onclose = function (evt) {
+      tableOnClose(evt);
+    };
+    tableWebsocket.onmessage = function (evt) {
+      tableOnMessage(evt);
+    };
+    tableWebsocket.onerror = function (evt) {
+      tableOnMessage(evt);
+    };
+  }
+
+  function tableOnOpen(evt) {
+    writeToTableCommandLogOutput("Table Websocket Connected.");
+  }
+
+  function tableOnClose(evt) {
+    writeToTableCommandLogOutput("Table Websocket Disconnected.");
+    tableConnectWebsocket();
+  }
+
+  function tableOnMessage(evt) {
+    var jsonObject = JSON.parse(evt.data);
+    writeToTableResponseLogOutput(JSON.stringify(jsonObject, null, 4));
+    if (has(jsonObject, "join_code")) {
+      document.getElementById("joinCodeIn").value = jsonObject.room.join_code;
+      document.getElementById("roomIdIn").value = jsonObject.room.id;
+      document.getElementById("tableUserIdIn").value =
+        jsonObject.room.host.user_id;
+    }
+    getRoom();
+  }
+
+  // #endregion
+
+  // #region userWebsocket functions
+  function userConnectWebsocket() {
+    var wsUrl = document.getElementById("stage-select").value;
+    userWebsocket = new WebSocket(wsUrl);
+    userWebsocket.onopen = function (evt) {
+      userOnOpen(evt);
+    };
+    userWebsocket.onclose = function (evt) {
+      userOnClose(evt);
+    };
+    userWebsocket.onmessage = function (evt) {
+      userOnMessage(evt);
+    };
+    userWebsocket.onerror = function (evt) {
+      userOnMessage(evt);
+    };
+  }
+
+  function userOnOpen(evt) {
+    document.getElementById("userNameIn").value =
+      names[Math.floor(Math.random() * names.length)];
+    document.getElementById("userUserIdIn").value =
+      ids[Math.floor(Math.random() * ids.length)];
+    document.getElementById("userProfileImageIn").value =
+      profile_img[Math.floor(Math.random() * profile_img.length)];
+    writeToUserCommandLogOutput("User Websocket Connected.");
+  }
+
+  function userOnClose(evt) {
+    writeToUserCommandLogOutput("User Websocket Disconnected.");
+  }
+
+  function userOnMessage(evt) {
+    if (has(evt.data, "join_code")) {
+      document.getElementById("roomIdIn").value = jsonObject.room.id;
+      document.getElementById("tableUserIdIn").value =
+        jsonObject.room.host.user_id;
+    }
+    writeToUserResponseLogOutput(JSON.stringify(JSON.parse(evt.data), null, 4));
+    getRoom();
+  }
+
+  // #endregion
+
+  // #region output functions
+  function writeToRoomOutput(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = Date().toString() + "\n" + message;
+    if (roomOutput.hasChildNodes()) {
+      roomOutput.removeChild(roomOutput.childNodes[0]);
+    }
+    roomOutput.appendChild(pre);
+  }
+
+  function writeToTableCommandLogOutput(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = Date().toString() + "\n" + message;
+    if (tableCommandLogOutput.hasChildNodes()) {
+      tableCommandLogOutput.insertBefore(
+        pre,
+        tableCommandLogOutput.childNodes[0],
+      );
+    } else {
+      tableCommandLogOutput.appendChild(pre);
+    }
+  }
+
+  function writeToTableResponseLogOutput(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = Date().toString() + "\n" + message;
+    if (tableResponseLogOutput.hasChildNodes()) {
+      tableResponseLogOutput.insertBefore(
+        pre,
+        tableResponseLogOutput.childNodes[0],
+      );
+    } else {
+      tableResponseLogOutput.appendChild(pre);
+    }
+  }
+
+  function writeToUserCommandLogOutput(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = Date().toString() + "\n" + message;
+    if (userCommandLogOutput.hasChildNodes()) {
+      userCommandLogOutput.insertBefore(
+        pre,
+        userCommandLogOutput.childNodes[0],
+      );
+    } else {
+      userCommandLogOutput.appendChild(pre);
+    }
+  }
+
+  function writeToUserResponseLogOutput(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = Date().toString() + "\n" + message;
+    if (userResponseLogOutput.hasChildNodes()) {
+      userResponseLogOutput.insertBefore(
+        pre,
+        userResponseLogOutput.childNodes[0],
+      );
+    } else {
+      userResponseLogOutput.appendChild(pre);
+    }
+  }
+
+  //#endregion
+
+  // #region table functions
+  function tableCreateRoom() {
+    var msg = {
+      action: "create-room",
+      displayName: document.getElementById("displayNameIn").value,
+      // userId: document.getElementById("userIdIn").value,
+      userId: "google_105865589907081290209",
+      profileImage: document.getElementById("profileImageIn").value,
+      gameCode: document.getElementById("gameCodeIn").value,
+      debug: true,
+      edition: document.getElementById("edition-select").value,
+    };
+    console.log('msgmsgmsg: ', msg);
+    writeToTableCommandLogOutput(JSON.stringify(msg));
+    tableWebsocket.send(JSON.stringify(msg));
+  }
+
+  function tableHostRejoin() {
+    var msg = {
+      action: "host-rejoin",
+      roomId: document.getElementById("roomIdIn").value,
+      userId: document.getElementById("userIdIn").value,
+      debug: true,
+    };
+    writeToTableCommandLogOutput(JSON.stringify(msg));
+    tableWebsocket.send(JSON.stringify(msg));
+  }
+
+  function tableEndGame() {
+    var msg = {
+      action: "end-game",
+      roomId: document.getElementById("roomIdIn").value,
+      debug: true,
+    };
+    writeToTableCommandLogOutput(JSON.stringify(msg));
+    tableWebsocket.send(JSON.stringify(msg));
+  }
+
+  function tableRemoveUser() {
+    var msg = {
+      action: "remove-user",
+      roomId: document.getElementById("roomIdIn").value,
+      playerId: Number(document.getElementById("tableRemovePlayerIdIn").value),
+      debug: true,
+    };
+    writeToTableCommandLogOutput(JSON.stringify(msg));
+    tableWebsocket.send(JSON.stringify(msg));
+  }
+
+  function tableUpdateStatus() {
+    var msg = {
+      action: "update-status",
+      roomId: document.getElementById("roomIdIn").value,
+      tableTopName: document.getElementById("tableTopNameIn").value,
+      destination: "SubmitPhoto",
+      debug: true,
+    };
+    writeToTableCommandLogOutput(JSON.stringify(msg));
+    tableWebsocket.send(JSON.stringify(msg));
+  }
+
+  // #region user functions
+  function userJoinRoom() {
+    var msg = {
+      action: "join-room",
+      joinCode: document.getElementById("joinCodeIn").value,
+      userId: document.getElementById("userUserIdIn").value,
+      name: document.getElementById("userNameIn").value,
+      profileImage: document.getElementById("userProfileImageIn").value,
+      debug: true,
+    };
+    writeToUserCommandLogOutput(JSON.stringify(msg));
+    userWebsocket.send(JSON.stringify(msg));
+  }
+
+  function userUpdateStatus() {
+    var msg = {
+      action: "update-status",
+      roomId: document.getElementById("roomIdIn").value,
+      destination: document.getElementById("user-destination").value,
+      debug: true,
+    };
+    writeToUserCommandLogOutput(JSON.stringify(msg));
+    userWebsocket.send(JSON.stringify(msg));
+  }
+
+  function userPlayerRejoin() {
+    var msg = {
+      action: "player-rejoin",
+      joinCode: document.getElementById("joinCodeIn").value,
+      userId: document.getElementById("userUserIdIn").value,
+      debug: true,
+    };
+    writeToUserCommandLogOutput(JSON.stringify(msg));
+    userWebsocket.send(JSON.stringify(msg));
+  }
+
+  function userLeaveRoom() {
+    var msg = {
+      action: "leave-room",
+      roomId: document.getElementById("roomIdIn").value,
+      playerId: Number(document.getElementById("userPlayerIdIn").value),
+      debug: true,
+    };
+    writeToUserCommandLogOutput(JSON.stringify(msg));
+    userWebsocket.send(JSON.stringify(msg));
+  }
+
+  function medUpdateStatus() {
+    var msg = {
+      action: "update-status",
+      roomId: document.getElementById("roomIdIn").value,
+      tableTopName: document.getElementById("tableTopNameIn").value,
+      activityId: document.getElementById("activityId").value,
+      debug: true,
+    };
+    writeToTableCommandLogOutput(JSON.stringify(msg));
+    tableWebsocket.send(JSON.stringify(msg));
+  }
+  // #region helper functions
+  // has function checks for nested json property
+  has = function (obj, key) {
+    return key.split(".").every(function (x) {
+      if (typeof obj != "object" || obj === null || !x in obj) return false;
+      obj = obj[x];
+      return true;
+    });
+  };
+  // #endregion
+
+  // listener that runs the init() function
+  window.addEventListener("load", init, false);
+</script>
+<style>
+  body {
+    font-family: Verdana;
+    color: black;
+  }
+
+  .functions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 50%;
+    bottom: 50%;
+    padding-left: 1%;
+    border: solid #000;
+    border-width: 0 1px 1px 0;
+    overflow: hidden;
+  }
+
+  .tableCommandLog {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 75%;
+    bottom: 25%;
+    padding-left: 1%;
+    border: solid #000;
+    border-width: 0 1px 1px 0;
+    overflow: hidden;
+  }
+
+  .tableResponseLog {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    right: 50%;
+    bottom: 25%;
+    padding-left: 1%;
+    border: solid #000;
+    border-width: 0 1px 1px 0;
+    overflow: hidden;
+  }
+
+  .userCommandLog {
+    position: absolute;
+    top: 75%;
+    left: 0;
+    right: 75%;
+    bottom: 0;
+    padding-left: 1%;
+    border: solid #000;
+    border-width: 0 1px 0 0;
+    overflow: hidden;
+  }
+
+  .userResponseLog {
+    position: absolute;
+    top: 75%;
+    left: 25%;
+    right: 50%;
+    bottom: 0;
+    padding-left: 1%;
+    border: solid #000;
+    border-width: 0 1px 0 0;
+    overflow: hidden;
+  }
+
+  .roomObject {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    padding-left: 1%;
+    border: solid #000;
+    border-width: 0 0 0 0;
+    overflow: hidden;
+  }
+
+  .gray {
+    background: gray;
+    color: white;
+  }
+
+  .white {
+    background: white;
+    color: black;
+  }
+
+  .scroll {
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+</style>
+
+<body>
+  <div class="functions gray scroll">
+    <h2>Wellness Activities</h2>
+    Environment:
+    <select id="stage-select" onchange="setRoomWebSocket()">
+      <option value="ws://localhost:3001">Localhost</option>
+      <option value="wss://3fi9h53479.execute-api.us-east-1.amazonaws.com/apptest">
+        Apptest
+      </option>
+      <option value="wss://l0zcck7ei5.execute-api.us-east-1.amazonaws.com/dev">
+        Develop
+      </option>
+      <option value="wss://3unowgxe3i.execute-api.us-east-1.amazonaws.com/prod">
+        Production
+      </option>
+    </select>
+    <br />
+    Join Code: <input type="text" id="joinCodeIn" value="Join Code" /> Room Id:
+    <input type="text" id="roomIdIn" value="Room ID" />
+    <br />
+    Table/Host User Id: <input type="text" id="tableUserIdIn" value="User Id" />
+    <h3>Table Functions</h3>
+    <button type="button" onclick="tableConnectWebsocket()">
+      Table - Connect
+    </button>
+    <br />
+    <button type="button" onclick="tableCreateRoom()">Table - Create Room</button>:
+    <input type="text" id="displayNameIn" value="displayName" />
+    <input type="text" id="userIdIn" value="userId" />
+    <input type="text" id="profileImageIn" value="profileImage" />
+    <input type="text" id="gameCodeIn" value="WELL" />
+    <br /><br />
+
+    <button type="button" onclick="tableHostRejoin()">Table - Host Rejoin</button>
+    <button type="button" onclick="tableUpdateStatus()">
+      Table - Update Status
+    </button>
+    <input type="text" id="tableTopNameIn" value="Wellness Activities" />
+    <button type="button" onclick="tableEndGame()">Table - End Game</button>
+    <br />
+    <!-- Player ID to change team: <input type="text" id="tableChangeTeamPlayerIdIn" value="1" /> -->
+    <br />
+    Player ID to remove:
+    <input type="text" id="tableRemovePlayerIdIn" value="tableRemovePlayerId" />
+    <button type="button" onclick="tableRemoveUser()">Table - Remove User</button>
+    <br>
+
+    Asker <input type="text" id="ttl-tableSelectAsker" value="Asker Player Id" />
+    <button type="button" onclick="ttlTableSelectAsker()">
+      Tabletop - Choose Asker
+    </button>
+
+
+
+    <select id="edition-select">
+      <option value="MED">MED</option>
+      <option value="BREATH">BREATH</option>
+      <option value="STRETCH">STRETCH</option>
+    </select>
+    <input type="text" id="activityId" value="activityId" />
+    <!-- <input type="text" id="duration" value="Duration" /> -->
+    <button type="button" onclick="medUpdateStatus()">
+      Tabletop - update-status
+    </button>
+
+    <br /><br />
+    <h3>User Functions</h3>
+    <button type="button" onclick="userConnectWebsocket()">User - Connect</button>
+    <br />
+    <button type="button" onclick="userJoinRoom()">User - Join Room</button>
+    <input type="text" id="userUserIdIn" value="UserId" />
+    <input type="text" id="userNameIn" value="userName" />
+    <input type="text" id="userProfileImageIn"
+      value="https://www.thesun.co.uk/wp-content/uploads/2018/11/NINTCHDBPICT000058057150-e1541188679993.jpg" />
+    <br />
+    <button type="button" onclick="userUpdateStatus()">
+      User - Update Status
+    </button>
+    <br />
+    <button type="button" onclick="userPlayerRejoin()">
+      User - Player Rejoin
+    </button>
+    <button type="button" onclick="userLeaveRoom()">User - Leave Room</button>
+    <input type="text" id="userPlayerIdIn" value="userPlayerId" />
+    <!-- ######### user function ######### -->
+    <br />
+  </div>
+  <div class="roomObject white scroll">
+    <h2>Room Object</h2>
+    <button type="button" onclick="getRoom()">Room - GetRoom</button>
+    <pre id="roomOutput"></pre>
+  </div>
+  <div class="tableCommandLog white scroll">
+    <h3>Table Command Log</h3>
+    <pre id="tableCommandLogOutput"></pre>
+  </div>
+  <div class="tableResponseLog white scroll">
+    <h3>Table Response Log</h3>
+    <pre id="tableResponseLogOutput"></pre>
+  </div>
+  <div class="userCommandLog white scroll">
+    <h3>User Command Log</h3>
+    <pre id="userCommandLogOutput"></pre>
+  </div>
+  <div class="userResponseLog white scroll">
+    <h3>User Response Log</h3>
+    <pre id="userResponseLogOutput"></pre>
+  </div>
+</body>
