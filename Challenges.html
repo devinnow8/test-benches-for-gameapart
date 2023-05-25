@@ -140,6 +140,7 @@
         unit: document.getElementById("unitId").value,
         goal: document.getElementById("goalId").value,
         goal_type: document.getElementById("goal_type_id").value,
+        percentage: document.getElementById("goal_type_id").value === "Improvement" ? document.getElementById("percentage_select").value == "true" ? true : false : false,
         start_date: document.getElementById("start_date_id").value == "" ? new Date() : document.getElementById("start_date_id").value,
         end_date: document.getElementById("end_date_id").value == "" ? new Date() : document.getElementById("end_date_id").value,
         show_data: document.getElementById("show_data_select").value,
@@ -170,11 +171,11 @@
         user_id: document.getElementById("table-userId-id").value,
         name: document.getElementById("nameId").value,
         type: document.getElementById("typeId").value,
-        description:
-          document.getElementById("descriptionId").value,
+        description: document.getElementById("descriptionId").value,
         unit: document.getElementById("unitId").value,
         goal: document.getElementById("goalId").value,
         goal_type: document.getElementById("goal_type_id").value,
+        percentage: document.getElementById("goal_type_id").value === "Improvement" ? document.getElementById("percentage_select").value == "true" ? true : false : false,
         start_date: document.getElementById("start_date_id").value == "" ? new Date() : document.getElementById("start_date_id").value,
         end_date: document.getElementById("end_date_id").value == "" ? new Date() : document.getElementById("end_date_id").value,
         show_data: document.getElementById("show_data_select").value,
@@ -212,6 +213,8 @@
     const entry_ts = document.getElementById("entry-ts-id").value
     if (entry_ts !== "entry_ts") {
       msg.entry_ts = entry_ts
+    } else {
+      msg.entry_ts = Math.floor(new Date().getTime() / 1000)
     }
     writeToUserCommandLogOutput(JSON.stringify(msg));
     userWebsocket.send(JSON.stringify(msg));
@@ -269,19 +272,19 @@
         tableResponseLogOutput.appendChild(pre);
       }
     }
-                                                                                                                                function writeToUserResponseLogOutput(message) {
-                                                                                                                                  var pre = document.createElement("p");
-                                                                                                                                  pre.style.wordWrap = "break-word";
-                                                                                                                                  pre.innerHTML = Date().toString() + "\n" + message;
-                                                                                                                                  if (userResponseLogOutput.hasChildNodes()) {
-                                                                                                                                    userResponseLogOutput.insertBefore(
-                                                                                                                                      pre,
-                                                                                                                                      userResponseLogOutput.childNodes[0],
-                                                                                                                                    );
-                                                                                                                                  } else {
-                                                                                                                                    userResponseLogOutput.appendChild(pre);
-                                                                                                                                  }
-                                                                                                                                }
+                                  function writeToUserResponseLogOutput(message) {
+                                    var pre = document.createElement("p");
+                                    pre.style.wordWrap = "break-word";
+                                    pre.innerHTML = Date().toString() + "\n" + message;
+                                    if (userResponseLogOutput.hasChildNodes()) {
+                                      userResponseLogOutput.insertBefore(
+                                        pre,
+                                        userResponseLogOutput.childNodes[0],
+                                      );
+                                    } else {
+                                      userResponseLogOutput.appendChild(pre);
+                                    }
+                                  }
     function writeToUserCommandLogOutput(message) {
       var pre = document.createElement("p");
       pre.style.wordWrap = "break-word";
@@ -442,6 +445,11 @@
       <option value="Cumulative">Cumulative</option>
       <option value="Improvement">Improvement</option>
       <option value="First Past Goal Post">First Past Goal Post</option>
+    </select>
+    <label for="percentage_select">percentage_select</label>
+    <select id="percentage_select">
+      <option value="false">false</option>
+      <option value="true">true</option>
     </select>
     <label for="start_date">start_date</label>
     <input type="date" value="start_date" id="start_date_id">
