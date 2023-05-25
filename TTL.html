@@ -157,7 +157,7 @@
     "Sachiko",
     "Mieko",
     "Toshie",
-    "Junko",
+    "Junko"
   ];
   var init_username = names[Math.floor(Math.random() * names.length)];
   var profile_img = [
@@ -199,7 +199,7 @@
     "https://www.freepngimg.com/thumb/car/31564-6-car-picture-thumb.png",
     "https://www.freepngimg.com/thumb/bugatti/33017-6-bugatti-free-download-thumb.png",
     "https://www.freepngimg.com/thumb/ship/8-ship-png-image-thumb.png",
-    "https://www.freepngimg.com/thumb/train/29482-6-train-clipart-thumb.png",
+    "https://www.freepngimg.com/thumb/train/29482-6-train-clipart-thumb.png"
   ];
   var init_profile_img =
     profile_img[Math.floor(Math.random() * profile_img.length)];
@@ -703,7 +703,7 @@
     "497",
     "498",
     "499",
-    "500",
+    "500"
   ];
   var init_id = ids[Math.floor(Math.random() * ids.length)];
   var roomSocket = null;
@@ -733,7 +733,7 @@
   function getRoom() {
     var msg = {
       action: "get-room",
-      joinCode: document.getElementById("joinCodeIn").value,
+      joinCode: document.getElementById("joinCodeIn").value
     };
     roomSocket.send(JSON.stringify(msg));
   }
@@ -861,7 +861,7 @@
     if (tableCommandLogOutput.hasChildNodes()) {
       tableCommandLogOutput.insertBefore(
         pre,
-        tableCommandLogOutput.childNodes[0],
+        tableCommandLogOutput.childNodes[0]
       );
     } else {
       tableCommandLogOutput.appendChild(pre);
@@ -875,7 +875,7 @@
     if (tableResponseLogOutput.hasChildNodes()) {
       tableResponseLogOutput.insertBefore(
         pre,
-        tableResponseLogOutput.childNodes[0],
+        tableResponseLogOutput.childNodes[0]
       );
     } else {
       tableResponseLogOutput.appendChild(pre);
@@ -889,7 +889,7 @@
     if (userCommandLogOutput.hasChildNodes()) {
       userCommandLogOutput.insertBefore(
         pre,
-        userCommandLogOutput.childNodes[0],
+        userCommandLogOutput.childNodes[0]
       );
     } else {
       userCommandLogOutput.appendChild(pre);
@@ -903,7 +903,7 @@
     if (userResponseLogOutput.hasChildNodes()) {
       userResponseLogOutput.insertBefore(
         pre,
-        userResponseLogOutput.childNodes[0],
+        userResponseLogOutput.childNodes[0]
       );
     } else {
       userResponseLogOutput.appendChild(pre);
@@ -921,7 +921,7 @@
       userId: "google_105865589907081290209",
       profileImage: document.getElementById("profileImageIn").value,
       gameCode: document.getElementById("gameCodeIn").value,
-      debug: true,
+      debug: true
     };
     writeToTableCommandLogOutput(JSON.stringify(msg));
     tableWebsocket.send(JSON.stringify(msg));
@@ -932,7 +932,7 @@
       action: "host-rejoin",
       roomId: document.getElementById("roomIdIn").value,
       userId: document.getElementById("userIdIn").value,
-      debug: true,
+      debug: true
     };
     writeToTableCommandLogOutput(JSON.stringify(msg));
     tableWebsocket.send(JSON.stringify(msg));
@@ -942,7 +942,7 @@
     var msg = {
       action: "end-game",
       roomId: document.getElementById("roomIdIn").value,
-      debug: true,
+      debug: true
     };
     writeToTableCommandLogOutput(JSON.stringify(msg));
     tableWebsocket.send(JSON.stringify(msg));
@@ -953,7 +953,7 @@
       action: "remove-user",
       roomId: document.getElementById("roomIdIn").value,
       playerId: Number(document.getElementById("tableRemovePlayerIdIn").value),
-      debug: true,
+      debug: true
     };
     writeToTableCommandLogOutput(JSON.stringify(msg));
     tableWebsocket.send(JSON.stringify(msg));
@@ -965,7 +965,7 @@
       roomId: document.getElementById("roomIdIn").value,
       tableTopName: document.getElementById("tableTopNameIn").value,
       destination: "ChooseAsker",
-      debug: true,
+      debug: true
     };
     writeToTableCommandLogOutput(JSON.stringify(msg));
     tableWebsocket.send(JSON.stringify(msg));
@@ -979,7 +979,7 @@
       userId: document.getElementById("userUserIdIn").value,
       name: document.getElementById("userNameIn").value,
       profileImage: document.getElementById("userProfileImageIn").value,
-      debug: true,
+      debug: true
     };
     writeToUserCommandLogOutput(JSON.stringify(msg));
     userWebsocket.send(JSON.stringify(msg));
@@ -990,7 +990,7 @@
       action: "update-status",
       roomId: document.getElementById("roomIdIn").value,
       destination: document.getElementById("user-destination").value,
-      debug: true,
+      debug: true
     };
     writeToUserCommandLogOutput(JSON.stringify(msg));
     userWebsocket.send(JSON.stringify(msg));
@@ -1001,7 +1001,7 @@
       action: "player-rejoin",
       joinCode: document.getElementById("joinCodeIn").value,
       userId: document.getElementById("userUserIdIn").value,
-      debug: true,
+      debug: true
     };
     writeToUserCommandLogOutput(JSON.stringify(msg));
     userWebsocket.send(JSON.stringify(msg));
@@ -1011,7 +1011,7 @@
       action: "leave-room",
       roomId: document.getElementById("roomIdIn").value,
       playerId: Number(document.getElementById("userPlayerIdIn").value),
-      debug: true,
+      debug: true
     };
     writeToUserCommandLogOutput(JSON.stringify(msg));
     userWebsocket.send(JSON.stringify(msg));
@@ -1023,7 +1023,7 @@
       roomId: document.getElementById("roomIdIn").value,
       tableTopName: document.getElementById("tableTopNameIn").value,
       asker: document.getElementById("ttl-tableSelectAsker").value,
-      debug: true,
+      debug: true
     };
     writeToTableCommandLogOutput(JSON.stringify(msg));
     tableWebsocket.send(JSON.stringify(msg));
@@ -1032,7 +1032,7 @@
   function ttl_submit() {
     const truths = [
       document.getElementById("truth1").value,
-      document.getElementById("truth2").value,
+      document.getElementById("truth2").value
     ];
     var msg = {
       action: "ttl-submit",
@@ -1040,7 +1040,7 @@
       playerId: Number(document.getElementById("userPlayerIdIn").value),
       truths,
       lie: document.getElementById("lie").value,
-      debug: true,
+      debug: true
     };
     writeToUserCommandLogOutput(JSON.stringify(msg));
     userWebsocket.send(JSON.stringify(msg));
@@ -1052,13 +1052,11 @@
       roomId: document.getElementById("roomIdIn").value,
       playerId: Number(document.getElementById("userPlayerIdIn").value),
       guess: Number(document.getElementById("ttl-guess").value),
-      debug: true,
+      debug: true
     };
     writeToUserCommandLogOutput(JSON.stringify(msg));
     userWebsocket.send(JSON.stringify(msg));
   }
-
-
 
   // #endregion
 
@@ -1172,14 +1170,15 @@
 
 <body>
   <div class="functions gray scroll">
-    <h2>Two Truths and a Lie
-    </h2>
+    <h2>Two Truths and a Lie</h2>
     Environment:
     <select id="stage-select" onchange="setRoomWebSocket()">
-      <option value="ws://localhost:3001">Localhost</option>
-      <option value="wss://3fi9h53479.execute-api.us-east-1.amazonaws.com/apptest">
+      <option
+        value="wss://3fi9h53479.execute-api.us-east-1.amazonaws.com/apptest"
+      >
         Apptest
       </option>
+      <option value="ws://localhost:3001">Localhost</option>
       <option value="wss://l0zcck7ei5.execute-api.us-east-1.amazonaws.com/dev">
         Develop
       </option>
@@ -1197,14 +1196,18 @@
       Table - Connect
     </button>
     <br />
-    <button type="button" onclick="tableCreateRoom()">Table - Create Room</button>:
+    <button type="button" onclick="tableCreateRoom()">
+      Table - Create Room</button
+    >:
     <input type="text" id="displayNameIn" value="displayName" />
     <input type="text" id="userIdIn" value="userId" />
     <input type="text" id="profileImageIn" value="profileImage" />
     <input type="text" id="gameCodeIn" value="TTL" />
     <br /><br />
 
-    <button type="button" onclick="tableHostRejoin()">Table - Host Rejoin</button>
+    <button type="button" onclick="tableHostRejoin()">
+      Table - Host Rejoin
+    </button>
     <button type="button" onclick="tableUpdateStatus()">
       Table - Update Status
     </button>
@@ -1215,10 +1218,13 @@
     <br />
     Player ID to remove:
     <input type="text" id="tableRemovePlayerIdIn" value="tableRemovePlayerId" />
-    <button type="button" onclick="tableRemoveUser()">Table - Remove User</button>
-    <br>
+    <button type="button" onclick="tableRemoveUser()">
+      Table - Remove User
+    </button>
+    <br />
 
-    Asker <input type="text" id="ttl-tableSelectAsker" value="Asker Player Id" />
+    Asker
+    <input type="text" id="ttl-tableSelectAsker" value="Asker Player Id" />
     <button type="button" onclick="ttlTableSelectAsker()">
       Tabletop - Choose Asker
     </button>
@@ -1226,13 +1232,18 @@
     <!-- ######### tabletop functions ######### -->
     <br />
     <h3>User Functions</h3>
-    <button type="button" onclick="userConnectWebsocket()">User - Connect</button>
+    <button type="button" onclick="userConnectWebsocket()">
+      User - Connect
+    </button>
     <br />
     <button type="button" onclick="userJoinRoom()">User - Join Room</button>
     <input type="text" id="userUserIdIn" value="UserId" />
     <input type="text" id="userNameIn" value="userName" />
-    <input type="text" id="userProfileImageIn"
-      value="https://www.thesun.co.uk/wp-content/uploads/2018/11/NINTCHDBPICT000058057150-e1541188679993.jpg" />
+    <input
+      type="text"
+      id="userProfileImageIn"
+      value="https://www.thesun.co.uk/wp-content/uploads/2018/11/NINTCHDBPICT000058057150-e1541188679993.jpg"
+    />
     <br />
     <button type="button" onclick="userUpdateStatus()">
       User - Update Status
@@ -1243,7 +1254,7 @@
     </button>
     <button type="button" onclick="userLeaveRoom()">User - Leave Room</button>
     <input type="text" id="userPlayerIdIn" value="userPlayerId" />
-    <br>
+    <br />
     <input type="text" id="truth1" value="truth1" />
     <input type="text" id="truth2" value="truth2" />
     <input type="text" id="lie" value="lie" />
