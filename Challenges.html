@@ -141,6 +141,7 @@
         goal: document.getElementById("goalId").value,
         goal_type: document.getElementById("goal_type_id").value,
         percentage: document.getElementById("goal_type_id").value === "Improvement" ? document.getElementById("percentage_select").value == "true" ? true : false : false,
+        positive: document.getElementById("typeId").value === "Competitive" ? document.getElementById("positive_select").value == "true" ? true : false : true,
         start_date: document.getElementById("start_date_id").value == "" ? new Date() : document.getElementById("start_date_id").value,
         end_date: document.getElementById("end_date_id").value == "" ? new Date() : document.getElementById("end_date_id").value,
         show_data: document.getElementById("show_data_select").value,
@@ -176,6 +177,7 @@
         goal: document.getElementById("goalId").value,
         goal_type: document.getElementById("goal_type_id").value,
         percentage: document.getElementById("goal_type_id").value === "Improvement" ? document.getElementById("percentage_select").value == "true" ? true : false : false,
+        positive: document.getElementById("typeId").value === "Competitive" ? document.getElementById("positive_select").value == "true" ? true : false : true,
         start_date: document.getElementById("start_date_id").value == "" ? new Date() : document.getElementById("start_date_id").value,
         end_date: document.getElementById("end_date_id").value == "" ? new Date() : document.getElementById("end_date_id").value,
         show_data: document.getElementById("show_data_select").value,
@@ -417,8 +419,8 @@
     <h2>Challenges Testing</h2>
     Environment:
     <select id="stage-select"">
-      <option value=" ws://localhost:3001">localhost</option>
       <option value="wss://3fi9h53479.execute-api.us-east-1.amazonaws.com/apptest">Apptest</option>
+      <option value=" ws://localhost:3001">localhost</option>
       <option value="wss://l0zcck7ei5.execute-api.us-east-1.amazonaws.com/dev">Develop</option>
       <option value="wss://3unowgxe3i.execute-api.us-east-1.amazonaws.com/prod">Production</option>
     </select>
@@ -435,6 +437,11 @@
     <select id="typeId">
       <option value="Cooperative">Cooperative</option>
       <option value="Competitive">Competitive</option>
+    </select>
+    <label for="positive_select">positive_select</label>
+    <select id="positive_select">
+      <option value="true">true</option>
+      <option value="false">false</option>
     </select>
     <input type="text" id="descriptionId" value="description">
     <input type="text" value="unit" id="unitId">
